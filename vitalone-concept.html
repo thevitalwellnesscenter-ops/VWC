@@ -1,0 +1,486 @@
+<title>VitalOne EHR</title>
+<style>
+  :root {
+    --paper: #F7F9F6;
+    --surface: #FFFFFF;
+    --ink: #1A2620;
+    --muted: #5C6B63;
+    --line: #DCE4DF;
+    --accent: #0E7C6F;
+    --accent-soft: #E1F0ED;
+    --athena: #4053C8;
+    --athena-soft: #E8EAFB;
+    --opti: #4C8A3F;
+    --opti-soft: #E9F2E4;
+    --both-soft: #F1EFE2;
+    --both-ink: #8A7A2E;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #101713;
+      --surface: #17211C;
+      --ink: #E4EBE6;
+      --muted: #93A29A;
+      --line: #2A362F;
+      --accent: #3FBFAD;
+      --accent-soft: #12332E;
+      --athena: #93A0F2;
+      --athena-soft: #232A4E;
+      --opti: #8CC776;
+      --opti-soft: #24361D;
+      --both-soft: #322F1B;
+      --both-ink: #CBBC6A;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #101713;
+    --surface: #17211C;
+    --ink: #E4EBE6;
+    --muted: #93A29A;
+    --line: #2A362F;
+    --accent: #3FBFAD;
+    --accent-soft: #12332E;
+    --athena: #93A0F2;
+    --athena-soft: #232A4E;
+    --opti: #8CC776;
+    --opti-soft: #24361D;
+    --both-soft: #322F1B;
+    --both-ink: #CBBC6A;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: system-ui, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0 24px;
+  }
+  .page { max-width: 880px; margin: 0 auto; padding: 64px 0 96px; }
+
+  .display {
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Charter, Georgia, serif;
+    text-wrap: balance;
+    margin: 0;
+  }
+  .eyebrow {
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 12px;
+  }
+  .muted { color: var(--muted); }
+
+  /* ---------- Hero ---------- */
+  header.hero { padding-bottom: 40px; border-bottom: 1px solid var(--line); }
+  .hero h1 { font-size: clamp(44px, 8vw, 68px); line-height: 1.05; font-weight: 600; letter-spacing: -0.01em; }
+  .hero h1 .one { color: var(--accent); font-style: italic; }
+  .hero .thesis {
+    font-size: 20px;
+    max-width: 40em;
+    margin: 20px 0 0;
+  }
+  .parents {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 28px;
+  }
+  .parent {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 13.5px;
+    font-weight: 550;
+  }
+  .parent .dot { width: 9px; height: 9px; border-radius: 50%; }
+  .parent.a { background: var(--athena-soft); color: var(--athena); }
+  .parent.a .dot { background: var(--athena); }
+  .parent.o { background: var(--opti-soft); color: var(--opti); }
+  .parent.o .dot { background: var(--opti); }
+  .parent.v { background: var(--accent-soft); color: var(--accent); }
+  .parent.v .dot { background: var(--accent); }
+  .legend-note { font-size: 13.5px; margin-top: 14px; }
+
+  /* ---------- Sections ---------- */
+  section { padding: 48px 0 8px; }
+  section > h2 {
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Charter, Georgia, serif;
+    font-size: 30px;
+    font-weight: 600;
+    margin: 0 0 8px;
+    text-wrap: balance;
+  }
+  section > .lede { max-width: 42em; margin: 0 0 28px; color: var(--muted); font-size: 16.5px; }
+
+  /* ---------- Synthesis columns ---------- */
+  .dna { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 640px) { .dna { grid-template-columns: 1fr; } }
+  .strand {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-top: 3px solid var(--athena);
+    border-radius: 10px;
+    padding: 22px 24px;
+  }
+  .strand.opti-strand { border-top-color: var(--opti); }
+  .strand h3 { margin: 0 0 4px; font-size: 17px; }
+  .strand .from { font-size: 12.5px; font-family: ui-monospace, "SF Mono", Consolas, monospace; letter-spacing: 0.08em; text-transform: uppercase; }
+  .strand.athena-strand .from { color: var(--athena); }
+  .strand.opti-strand .from { color: var(--opti); }
+  .strand ul { margin: 14px 0 0; padding-left: 18px; }
+  .strand li { margin-bottom: 8px; font-size: 15px; }
+  .strand li::marker { color: var(--muted); }
+
+  /* ---------- Modules ---------- */
+  .module {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 28px 30px;
+    margin-bottom: 22px;
+  }
+  .module .mod-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .module h3 {
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Charter, Georgia, serif;
+    font-size: 23px;
+    font-weight: 600;
+    margin: 0;
+  }
+  .mod-code {
+    font-family: ui-monospace, "SF Mono", Consolas, monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 3px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .module .mod-desc { margin: 10px 0 20px; max-width: 46em; font-size: 15.5px; }
+  .features { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0; padding: 0; list-style: none; }
+  @media (max-width: 640px) { .features { grid-template-columns: 1fr; } }
+  .feature {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 14.5px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background: var(--paper);
+  }
+  .feature strong { font-weight: 600; }
+  .chip {
+    align-self: flex-start;
+    font-size: 11px;
+    font-family: ui-monospace, "SF Mono", Consolas, monospace;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .chip.a { background: var(--athena-soft); color: var(--athena); }
+  .chip.o { background: var(--opti-soft); color: var(--opti); }
+  .chip.b { background: var(--both-soft); color: var(--both-ink); }
+
+  /* ---------- Architecture ---------- */
+  .arch { display: flex; flex-direction: column; gap: 8px; }
+  .arch-layer {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 18px;
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 14px;
+    align-items: center;
+  }
+  @media (max-width: 640px) { .arch-layer { grid-template-columns: 1fr; gap: 6px; } }
+  .arch-name {
+    font-family: ui-monospace, "SF Mono", Consolas, monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .arch-items { display: flex; flex-wrap: wrap; gap: 8px; }
+  .arch-item {
+    font-size: 13.5px;
+    padding: 5px 12px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--paper);
+  }
+  .arch-flow {
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1;
+  }
+
+  /* ---------- Roadmap ---------- */
+  .phases { display: flex; flex-direction: column; gap: 0; counter-reset: phase; }
+  .phase {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 18px;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .phase:last-child { border-bottom: none; }
+  .phase-num {
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Charter, Georgia, serif;
+    font-size: 34px;
+    line-height: 1;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+  }
+  .phase h3 { margin: 0 0 4px; font-size: 17px; }
+  .phase .when { font-size: 12.5px; font-family: ui-monospace, "SF Mono", Consolas, monospace; letter-spacing: 0.06em; color: var(--muted); text-transform: uppercase; }
+  .phase p { margin: 8px 0 0; font-size: 15px; max-width: 48em; }
+
+  /* ---------- KPI table ---------- */
+  .kpi-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+  table.kpi { border-collapse: collapse; width: 100%; font-size: 14.5px; min-width: 560px; }
+  .kpi th, .kpi td { text-align: left; padding: 12px 18px; border-bottom: 1px solid var(--line); }
+  .kpi tr:last-child td { border-bottom: none; }
+  .kpi th {
+    font-family: ui-monospace, "SF Mono", Consolas, monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .kpi td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .kpi td.num strong { color: var(--accent); }
+
+  footer {
+    margin-top: 56px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    font-size: 13.5px;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  a { color: var(--accent); }
+</style>
+
+<div class="page">
+
+  <header class="hero">
+    <p class="eyebrow">Product concept · The Vital Wellness Center</p>
+    <h1 class="display">Vital<span class="one">One</span></h1>
+    <p class="thesis">A cloud EHR for primary care that pairs the clinical depth, revenue cycle, and patient engagement of <strong>athenaOne</strong> with the workflow speed and scheduling flexibility of the <strong>Opti</strong> family — one chart, one bill, one front door for the patient.</p>
+    <div class="parents">
+      <span class="parent a"><span class="dot"></span>Inherited from athenaOne</span>
+      <span class="parent o"><span class="dot"></span>Inherited from Opti</span>
+      <span class="parent v"><span class="dot"></span>New in VitalOne</span>
+    </div>
+    <p class="legend-note muted">Every feature below is tagged with its lineage, so you can see exactly what "best of both" means in practice.</p>
+  </header>
+
+  <section>
+    <p class="eyebrow">01 · The synthesis</p>
+    <h2>What each parent contributes</h2>
+    <p class="lede">athenaOne is the insurance-grade backbone; Opti (OptiMantra's scheduling and billing flexibility, EmOpti's throughput mindset) is the agility layer. VitalOne is not a bundle of the two — it is one system designed around what each does best.</p>
+    <div class="dna">
+      <div class="strand athena-strand">
+        <span class="from">From athenaOne</span>
+        <h3>Depth &amp; compliance</h3>
+        <ul>
+          <li><strong>athenaClinicals-style charting</strong> — structured encounter notes, order sets, lab and imaging integration, longitudinal patient history.</li>
+          <li><strong>athenaCollector-style revenue cycle</strong> — payer rules engine, claim scrubbing before submission, denial management, eligibility checks.</li>
+          <li><strong>athenaCommunicator-style engagement</strong> — automated reminders, patient portal, self-service intake and messaging.</li>
+          <li>Network-scale intelligence: rules learned across practices reduce claim rejections for everyone.</li>
+        </ul>
+      </div>
+      <div class="strand opti-strand">
+        <span class="from">From Opti</span>
+        <h3>Speed &amp; flexibility</h3>
+        <ul>
+          <li><strong>OptiMantra-style scheduling</strong> — per-provider visit types, rooms and equipment as bookable resources, packages and memberships.</li>
+          <li><strong>Hybrid payment models</strong> — cash, insurance, superbills, and subscription billing living side by side on one invoice.</li>
+          <li><strong>EmOpti-style throughput</strong> — a live queue view of the clinic day, rapid triage-to-room workflows, built-in telehealth handoff.</li>
+          <li>Configurable by the practice, not by a vendor services team.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">02 · Core modules</p>
+    <h2>Four modules, one record</h2>
+    <p class="lede">Each module reads and writes the same patient record and the same ledger. Nothing is synced, because nothing is separate.</p>
+
+    <div class="module">
+      <div class="mod-head">
+        <h3>Clinical Charting</h3>
+        <span class="mod-code">VO-CLIN</span>
+      </div>
+      <p class="mod-desc">The chart a primary care physician actually works in all day: encounter documentation, problem lists, medications, orders, and results — with AI-drafted notes the clinician edits rather than writes.</p>
+      <ul class="features">
+        <li class="feature"><span class="chip a">athenaOne</span><strong>Structured SOAP encounters</strong> with specialty templates, order sets, and e-prescribing (EPCS-ready).</li>
+        <li class="feature"><span class="chip a">athenaOne</span><strong>Lab &amp; imaging loop</strong> — orders out, discrete results back into the chart with flags and trending.</li>
+        <li class="feature"><span class="chip o">Opti</span><strong>Flexible note types</strong> — quick visits, nurse-only encounters, and wellness protocols without full-note overhead.</li>
+        <li class="feature"><span class="chip b">VitalOne</span><strong>Ambient AI scribe</strong> — drafts the note from the visit conversation; clinician signs, never transcribes.</li>
+      </ul>
+    </div>
+
+    <div class="module">
+      <div class="mod-head">
+        <h3>Billing &amp; Revenue</h3>
+        <span class="mod-code">VO-REV</span>
+      </div>
+      <p class="mod-desc">Insurance-grade revenue cycle that also treats cash, packages, and memberships as first-class citizens — because a modern primary care practice runs on both.</p>
+      <ul class="features">
+        <li class="feature"><span class="chip a">athenaOne</span><strong>Claim scrubbing &amp; payer rules</strong> — errors caught before submission; denials worked from a single queue.</li>
+        <li class="feature"><span class="chip a">athenaOne</span><strong>Real-time eligibility</strong> and patient responsibility estimates at check-in, not at statement time.</li>
+        <li class="feature"><span class="chip o">Opti</span><strong>Cash, packages, memberships</strong> — recurring billing, prepaid visit packs, and superbill generation.</li>
+        <li class="feature"><span class="chip b">VitalOne</span><strong>One ledger</strong> — insurance and self-pay charges reconcile on a single patient balance and a single day-sheet.</li>
+      </ul>
+    </div>
+
+    <div class="module">
+      <div class="mod-head">
+        <h3>Scheduling &amp; Patient Engagement</h3>
+        <span class="mod-code">VO-FLOW</span>
+      </div>
+      <p class="mod-desc">The front door and the daily rhythm of the clinic: booking, reminders, intake, messaging, and a live view of where every patient is in their visit.</p>
+      <ul class="features">
+        <li class="feature"><span class="chip a">athenaOne</span><strong>Automated outreach</strong> — reminders, recalls, and no-show follow-up by text, email, and voice.</li>
+        <li class="feature"><span class="chip a">athenaOne</span><strong>Patient portal</strong> — results, messaging, bill pay, and self-scheduling from one login.</li>
+        <li class="feature"><span class="chip o">Opti</span><strong>Resource-aware scheduling</strong> — providers, rooms, and equipment booked together; waitlist auto-fills cancellations.</li>
+        <li class="feature"><span class="chip o">Opti</span><strong>Live clinic queue</strong> — arrival to room to checkout on one board, with telehealth visits in the same lanes.</li>
+      </ul>
+    </div>
+
+    <div class="module">
+      <div class="mod-head">
+        <h3>Analytics</h3>
+        <span class="mod-code">VO-INSIGHT</span>
+      </div>
+      <p class="mod-desc">Practice performance without exports: clinical quality, financial health, and operational throughput measured continuously from the same records the modules above create.</p>
+      <ul class="features">
+        <li class="feature"><span class="chip a">athenaOne</span><strong>Revenue cycle dashboards</strong> — days in A/R, clean-claim rate, denial reasons, payer mix.</li>
+        <li class="feature"><span class="chip a">athenaOne</span><strong>Quality measure tracking</strong> — MIPS/HEDIS-style gap lists with patient-level drill-down.</li>
+        <li class="feature"><span class="chip o">Opti</span><strong>Throughput metrics</strong> — wait time, cycle time, room utilization, no-show rate by visit type.</li>
+        <li class="feature"><span class="chip b">VitalOne</span><strong>Morning huddle brief</strong> — an auto-generated one-pager of today's schedule risks, care gaps, and open balances.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">03 · Architecture</p>
+    <h2>How it fits together</h2>
+    <p class="lede">A single patient record and ledger at the core; every surface — staff or patient, in-person or virtual — is a view over the same services.</p>
+    <div class="arch">
+      <div class="arch-layer">
+        <span class="arch-name">Experiences</span>
+        <div class="arch-items">
+          <span class="arch-item">Clinician workspace</span>
+          <span class="arch-item">Front-desk console</span>
+          <span class="arch-item">Patient portal &amp; mobile</span>
+          <span class="arch-item">Telehealth room</span>
+        </div>
+      </div>
+      <div class="arch-flow">▼</div>
+      <div class="arch-layer">
+        <span class="arch-name">Core services</span>
+        <div class="arch-items">
+          <span class="arch-item">Charting (VO-CLIN)</span>
+          <span class="arch-item">Revenue (VO-REV)</span>
+          <span class="arch-item">Scheduling (VO-FLOW)</span>
+          <span class="arch-item">Analytics (VO-INSIGHT)</span>
+          <span class="arch-item">AI services</span>
+        </div>
+      </div>
+      <div class="arch-flow">▼</div>
+      <div class="arch-layer">
+        <span class="arch-name">Data platform</span>
+        <div class="arch-items">
+          <span class="arch-item">Single patient record</span>
+          <span class="arch-item">Unified ledger</span>
+          <span class="arch-item">Audit &amp; consent log</span>
+        </div>
+      </div>
+      <div class="arch-flow">▼</div>
+      <div class="arch-layer">
+        <span class="arch-name">Integrations</span>
+        <div class="arch-items">
+          <span class="arch-item">FHIR R4 API</span>
+          <span class="arch-item">HL7v2 lab feeds</span>
+          <span class="arch-item">Clearinghouse (X12)</span>
+          <span class="arch-item">e-Rx / Surescripts</span>
+          <span class="arch-item">Payments</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">04 · Roadmap</p>
+    <h2>Path to first patient</h2>
+    <div class="phases">
+      <div class="phase">
+        <span class="phase-num">1</span>
+        <div>
+          <h3>Foundation</h3>
+          <span class="when">Months 0–6</span>
+          <p>Patient record, scheduling with resource booking, basic charting, and cash/package billing. A wellness-forward practice can run its whole day on VitalOne — before insurance is in the picture.</p>
+        </div>
+      </div>
+      <div class="phase">
+        <span class="phase-num">2</span>
+        <div>
+          <h3>Insurance-grade</h3>
+          <span class="when">Months 6–14</span>
+          <p>Eligibility, claim scrubbing, clearinghouse submission, denial management, and the unified ledger. e-Prescribing and lab interfaces land here. This is the athenaCollector-parity milestone.</p>
+        </div>
+      </div>
+      <div class="phase">
+        <span class="phase-num">3</span>
+        <div>
+          <h3>Intelligence</h3>
+          <span class="when">Months 14–24</span>
+          <p>Ambient AI scribe, live clinic queue with throughput analytics, quality measure tracking, and the morning huddle brief. The system stops recording the practice and starts running it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">05 · Success metrics</p>
+    <h2>What "better than both" means</h2>
+    <p class="lede">Targets benchmarked against typical mid-size primary care performance on incumbent systems.</p>
+    <div class="kpi-wrap">
+      <table class="kpi">
+        <thead>
+          <tr><th>Metric</th><th>Typical today</th><th>VitalOne target</th><th>Driven by</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Clean-claim rate</td><td class="num">~90%</td><td class="num"><strong>≥ 98%</strong></td><td>Payer rules engine (VO-REV)</td></tr>
+          <tr><td>Days in A/R</td><td class="num">35–45</td><td class="num"><strong>&lt; 25</strong></td><td>Unified ledger + eligibility at check-in</td></tr>
+          <tr><td>Documentation time per visit</td><td class="num">8–12 min</td><td class="num"><strong>&lt; 3 min</strong></td><td>Ambient AI scribe (VO-CLIN)</td></tr>
+          <tr><td>No-show rate</td><td class="num">10–15%</td><td class="num"><strong>&lt; 5%</strong></td><td>Outreach + waitlist auto-fill (VO-FLOW)</td></tr>
+          <tr><td>Patient wait time</td><td class="num">20+ min</td><td class="num"><strong>&lt; 10 min</strong></td><td>Live clinic queue (VO-FLOW)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <span>VitalOne · concept v0.1 · The Vital Wellness Center</span>
+    <span>Lineage: athenaOne (Clinicals · Collector · Communicator) × Opti (OptiMantra · EmOpti)</span>
+  </footer>
+
+</div>
