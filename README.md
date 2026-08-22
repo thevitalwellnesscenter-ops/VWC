@@ -7,4 +7,4 @@ Product concept for **VitalOne**, a hybrid cloud EHR for primary care that combi
 
 ## Contents
 
-- [`vitalone-concept.html`](vitalone-concept.html) — the full product concept page: synthesis of the two parent systems, four core modules (charting, billing, scheduling/engagement, analytics), architecture layers, roadmap, and success metrics. Open it in any browser.
+- [`index.html`](index.html) — the full product concept page: synthesis of the two parent systems, four core modules (charting, billing, scheduling/engagement, analytics), architecture layers, roadmap, and success metrics. Open it in any browser.
