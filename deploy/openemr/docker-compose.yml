@@ -1,0 +1,33 @@
+services:
+  mysql:
+    image: mariadb:11.4
+    restart: always
+    command: ["mariadbd", "--character-set-server=utf8mb4"]
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - dbvolume:/var/lib/mysql
+
+  openemr:
+    image: openemr/openemr:7.0.3
+    restart: always
+    ports:
+      - "8080:80"
+      - "8443:443"
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_ROOT_PASS: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: openemr
+      MYSQL_PASS: ${MYSQL_PASSWORD}
+      OE_USER: admin
+      OE_PASS: ${OE_ADMIN_PASSWORD}
+    volumes:
+      - sitevolume:/var/www/localhost/htdocs/openemr/sites
+      - logvolume:/var/log
+    depends_on:
+      - mysql
+
+volumes:
+  dbvolume:
+  sitevolume:
+  logvolume:
