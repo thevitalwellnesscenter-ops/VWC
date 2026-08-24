@@ -101,6 +101,36 @@ td.num { font-variant-numeric: tabular-nums; }
 .pill.good { background: var(--accent-soft); color: var(--accent); border-color: transparent; }
 .pill.warn { background: var(--warn-soft); color: var(--warn-ink); border-color: transparent; }
 
+.signin-wrap { min-height: 100vh; display: grid; place-items: center; }
+.signin { width: min(360px, 90vw); display: flex; flex-direction: column; gap: 14px; }
+.signin .brand { padding: 0; }
+.signin label { display: flex; flex-direction: column; gap: 4px; font-size: 13.5px; color: var(--muted); }
+.signin input {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 9px 12px;
+  font: inherit;
+  background: var(--paper);
+  color: var(--ink);
+}
+.signin button, .signout {
+  border: none;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.signin button { background: var(--accent); color: #fff; }
+.signin button:disabled { opacity: 0.6; cursor: default; }
+.signout {
+  margin-top: auto;
+  background: var(--paper);
+  color: var(--muted);
+  border: 1px solid var(--line);
+  font-size: 13px;
+}
+
 textarea {
   width: 100%;
   min-height: 140px;

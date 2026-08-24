@@ -7,7 +7,7 @@ export interface SampleAppointment {
   visitType: string;
   provider: string;
   room: string;
-  status: 'scheduled' | 'arrived' | 'in-room' | 'checkout';
+  status: string; // sample statuses or FHIR Appointment.status values when connected
 }
 
 export const todaysAppointments: SampleAppointment[] = [

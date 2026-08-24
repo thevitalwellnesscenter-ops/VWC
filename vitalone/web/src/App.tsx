@@ -1,5 +1,7 @@
+import { useCallback, useState } from 'react';
 import { NavLink, Navigate, Route, Routes } from 'react-router-dom';
-import { isConnected } from './medplum';
+import { isConfigured, isConnected, medplum } from './medplum';
+import SignIn from './auth/SignIn';
 import Flow from './modules/Flow';
 import Charting from './modules/Charting';
 import Revenue from './modules/Revenue';
@@ -13,6 +15,18 @@ const MODULES = [
 ];
 
 export default function App(): JSX.Element {
+  const [, setAuthVersion] = useState(0);
+  const refreshAuth = useCallback(() => setAuthVersion((v) => v + 1), []);
+
+  if (isConfigured && !isConnected()) {
+    return <SignIn onSignedIn={refreshAuth} />;
+  }
+
+  const signOut = async (): Promise<void> => {
+    await medplum.signOut();
+    refreshAuth();
+  };
+
   return (
     <div className="shell">
       <nav className="sidebar">
@@ -23,9 +37,12 @@ export default function App(): JSX.Element {
             <span className="mod-code">{m.code}</span>
           </NavLink>
         ))}
+        {isConnected() && (
+          <button type="button" className="signout" onClick={signOut}>Sign out</button>
+        )}
       </nav>
       <main className="main">
-        {!isConnected() && (
+        {!isConfigured && (
           <div className="banner">
             Showing synthetic demo data — no Medplum project connected. See vitalone/web/README.md to connect one.
           </div>

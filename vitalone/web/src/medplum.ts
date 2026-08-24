@@ -9,6 +9,9 @@ export const medplum = new MedplumClient({
   cacheTime: 60_000,
 });
 
+// A Medplum project is configured for this build (demo mode otherwise).
+export const isConfigured = Boolean(import.meta.env.VITE_MEDPLUM_CLIENT_ID);
+
 export function isConnected(): boolean {
   return Boolean(medplum.getActiveLogin());
 }
